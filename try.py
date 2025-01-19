@@ -1,9 +1,11 @@
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import GridSearchCV
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import learning_curve
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.linear_model import Lasso
 
@@ -24,9 +26,8 @@ scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-# # Membuat model Random Forest
-# model = RandomForestClassifier(random_state=42, n_estimators = 150, min_samples_leaf=5, min_samples_split=10, max_depth = 25)
-model = RandomForestClassifier(random_state=42, n_estimators = 200, min_samples_leaf=10, min_samples_split=15, max_depth = 15)
+# Model
+model = RandomForestClassifier(random_state=42)
 
 # # Melatih model dengan data training
 model.fit(X_train, y_train)
@@ -34,25 +35,19 @@ model.fit(X_train, y_train)
 # # Prediksi hasil untuk data testing
 y_pred = model.predict(X_test)
 
-# # Evaluasi model
-print(f'Accuracy: {accuracy_score(y_test, y_pred)}')
-print('Classification Report:')
-print(classification_report(y_test, y_pred))
-print('Confusion Matrix:')
-print(confusion_matrix(y_test, y_pred))
 
-# Menghitung learning curve
-train_sizes, train_scores, test_scores = learning_curve(model, X, y, cv=5, scoring='accuracy', n_jobs=-1)
+# Grid Hyperparameter
+# param_grid = {
+#     'n_estimators': [100, 150, 200, 250, 300, 350, 400, 450, 500],
+#     'min_samples_leaf': [5, 7, 10, 12, 15, 18, 20],
+#     'min_samples_split': [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+#     'max_depth': [20, 25, 30]
+# }
 
-# Menghitung rata-rata dan standar deviasi untuk plot
-train_mean = train_scores.mean(axis=1)
-test_mean = test_scores.mean(axis=1)
+# # Grid Search dengan 3-fold CV
+# grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=3, scoring='accuracy', verbose=2, n_jobs=-1)
+# grid_search.fit(X_train, y_train)
 
-# Plotting
-plt.plot(train_sizes, train_mean, label='Akurasi Pelatihan')
-plt.plot(train_sizes, test_mean, label='Akurasi Pengujian')
-plt.xlabel('Ukuran Data Pelatihan')
-plt.ylabel('Akurasi')
-plt.legend(loc='best')
-plt.title('Learning Curve')
-plt.show()
+# Hasil terbaik
+print("Best Hyperparameters:", grid_search.best_params_)
+print("Best Accuracy:", grid_search.best_score_)
