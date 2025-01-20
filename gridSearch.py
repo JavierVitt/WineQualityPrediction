@@ -36,18 +36,29 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 
 
-# Grid Hyperparameter
-# param_grid = {
-#     'n_estimators': [100, 150, 200, 250, 300, 350, 400, 450, 500],
-#     'min_samples_leaf': [5, 7, 10, 12, 15, 18, 20],
-#     'min_samples_split': [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-#     'max_depth': [20, 25, 30]
-# }
+from sklearn.model_selection import GridSearchCV
 
-# # Grid Search dengan 3-fold CV
-# grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=3, scoring='accuracy', verbose=2, n_jobs=-1)
-# grid_search.fit(X_train, y_train)
+# Parameter grid untuk tuning
+param_grid = {
+    'n_estimators': [100,125,150,175,200,225,250,275,300,325,350,375,400],
+    'max_depth': [0,5,10,15,20,25,30,35,40,45,50],
+    'min_samples_split': [10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50],
+    'min_samples_leaf': [10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50]
+}
 
-# Hasil terbaik
+# GridSearchCV
+grid_search = GridSearchCV(
+    estimator=RandomForestClassifier(random_state=42),
+    param_grid=param_grid,
+    scoring='accuracy',
+    cv=5,  # 5-fold cross-validation
+    n_jobs=-1,
+    verbose=1
+)
+
+# Menjalankan GridSearch
+grid_search.fit(X_train, y_train)
+
+# Output hasil terbaik
 print("Best Hyperparameters:", grid_search.best_params_)
 print("Best Accuracy:", grid_search.best_score_)
