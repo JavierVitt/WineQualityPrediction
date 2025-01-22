@@ -39,11 +39,15 @@ y_pred = model.predict(X_test)
 from sklearn.model_selection import GridSearchCV
 
 # Parameter grid untuk tuning
+# param_grid = {
+#     'n_estimators': [100, 200, 300],
+#     'max_depth': [10, 20, None],
+#     'min_samples_split': [2, 10],
+#     'min_samples_leaf': [1, 5],
+#     'max_features': ['sqrt', 'log2']
+# }
 param_grid = {
-    'n_estimators': [100,125,150,175,200,225,250,275,300,325,350,375,400],
-    'max_depth': [0,5,10,15,20,25,30,35,40,45,50],
-    'min_samples_split': [10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50],
-    'min_samples_leaf': [10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50]
+    'max_features': ['sqrt','log2',5,10,15,20]
 }
 
 # GridSearchCV
@@ -54,7 +58,7 @@ grid_search = GridSearchCV(
     cv=5,  # 5-fold cross-validation
     n_jobs=-1,
     verbose=1
-)
+)   
 
 # Menjalankan GridSearch
 grid_search.fit(X_train, y_train)
