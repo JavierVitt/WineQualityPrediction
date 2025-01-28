@@ -36,6 +36,17 @@ X_test = scaler.transform(X_test)
 # model = RandomForestClassifier(random_state=42, max_depth = 5, max_features=20, min_samples_leaf=1, min_samples_split=2, n_estimators=85) #nnti otak atik ini lagi
 # model = RandomForestClassifier(random_state=42, max_depth = 3, max_features=9, min_samples_leaf=1, min_samples_split=2, n_estimators=110) #ini lebi gg drpd atas
 model = RandomForestClassifier(random_state=42, max_depth = 3, max_features=9, min_samples_leaf=1, min_samples_split=2, n_estimators=110, bootstrap=True, n_jobs=-1)
+
+# model = RandomForestClassifier(
+#     random_state=42,
+#     max_depth=3,          # Kedalaman maksimum
+#     max_features='sqrt',   # Fitur maksimum per split
+#     min_samples_leaf=2,    # Sampel minimum per daun
+#     min_samples_split=5,   # Sampel minimum per split
+#     n_estimators=250,      # Jumlah pohon
+#     bootstrap=True,        # Penggunaan bootstrap
+#     n_jobs=-1              # Paralelisasi penuh
+# )
 # model = GradientBoostingClassifier(
 #     n_estimators=100,       # Jumlah pohon
 #     learning_rate=0.1,      # Kecepatan pembelajaran
@@ -58,13 +69,13 @@ dataPrediction = [
 
 #Predict: [0,1,1,1,0]
 
-y_pred = model.predict(dataPrediction)
+# y_pred = model.predict(dataPrediction)
 
 # # Prediksi hasil untuk data testing
-# y_pred = model.predict(X_test)
+y_pred = model.predict(X_test)
 
 # # Evaluasi model
-# print(f'Accuracy: {accuracy_score(y_test, y_pred)}')
+print(f'Accuracy: {accuracy_score(y_test, y_pred)}')
 print('Predict:', y_pred)
 # print('Classification Report:')
 # print(classification_report(y_test, y_pred))
